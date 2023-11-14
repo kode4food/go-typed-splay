@@ -4,13 +4,13 @@ package splaytree
 // Return two trees as a pair (left, right),
 // where left contains all items less than the boundary
 // and right contains only items at or beyond the boundary.
-func (tree *SplayTree) Split(item Item) (*SplayTree, *SplayTree) {
-	more := NewSplayTree()
-	if item == nil || tree.root == nil {
+func (tree *SplayTree[Item]) Split(item Item) (*SplayTree[Item], *SplayTree[Item]) {
+	more := NewSplayTree[Item](tree.lt)
+	if tree.root == nil {
 		return tree, more
 	}
 	tree.splay(item)
-	if tree.root.item.Less(item) {
+	if tree.lt(tree.root.item, item) {
 		more.root = tree.root.right
 		tree.root.right = nil
 	} else {

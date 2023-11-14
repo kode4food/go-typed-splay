@@ -4,48 +4,50 @@ import "testing"
 
 // Iterate over items in a tree while observing lower and upper bounds.
 func TestRangeIterator(t *testing.T) {
-	tree := NewSplayTree()
-	items := []Item{Int(2), Int(4), Int(6), Int(1), Int(5), Int(3), Int(0)}
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
+	items := []int{2, 4, 6, 1, 5, 3, 0}
 	tree.InsertAll(items)
 	for lkup := range items {
-		tree.Lookup(Int(lkup))
-		lower := Int(2)
-		upper := Int(4)
+		tree.Lookup(lkup)
+		lower := 2
+		upper := 4
 		iter := tree.RangeIterator(lower, upper)
-		for item := iter(); item != nil; item = iter() {
-			if item.Less(lower) || upper.Less(item) {
+		for item, ok := iter(); ok; item, ok = iter() {
+			if item < lower || upper < item {
 				t.Errorf("RangeIterator item %v ![%v, %v]", item, lower, upper)
 			}
 		}
-		lower = Int(-10)
-		upper = Int(-1)
+		lower = -10
+		upper = -1
 		iter = tree.RangeIterator(lower, upper)
-		for item := iter(); item != nil; item = iter() {
-			if item.Less(lower) || upper.Less(item) {
+		for item, ok := iter(); ok; item, ok = iter() {
+			if item < lower || upper < item {
 				t.Errorf("RangeIterator item %v ![%v, %v]", item, lower, upper)
 			}
 		}
-		lower = Int(-1)
-		upper = Int(3)
+		lower = -1
+		upper = 3
 		iter = tree.RangeIterator(lower, upper)
-		for item := iter(); item != nil; item = iter() {
-			if item.Less(lower) || upper.Less(item) {
+		for item, ok := iter(); ok; item, ok = iter() {
+			if item < lower || upper < item {
 				t.Errorf("RangeIterator item %v ![%v, %v]", item, lower, upper)
 			}
 		}
-		lower = Int(3)
-		upper = Int(9)
+		lower = 3
+		upper = 9
 		iter = tree.RangeIterator(lower, upper)
-		for item := iter(); item != nil; item = iter() {
-			if item.Less(lower) || upper.Less(item) {
+		for item, ok := iter(); ok; item, ok = iter() {
+			if item < lower || upper < item {
 				t.Errorf("RangeIterator item %v ![%v, %v]", item, lower, upper)
 			}
 		}
-		lower = Int(9)
-		upper = Int(29)
+		lower = 9
+		upper = 29
 		iter = tree.RangeIterator(lower, upper)
-		for item := iter(); item != nil; item = iter() {
-			if item.Less(lower) || upper.Less(item) {
+		for item, ok := iter(); ok; item, ok = iter() {
+			if item < lower || upper < item {
 				t.Errorf("RangeIterator item %v ![%v, %v]", item, lower, upper)
 			}
 		}

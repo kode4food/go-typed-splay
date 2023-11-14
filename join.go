@@ -3,37 +3,37 @@ package splaytree
 // Join two trees with cost O(N + M), which is optimal.
 // After the join all unique elements of both trees are
 // in the first tree. The second tree becomes empty.
-func (tree *SplayTree) Join(other Interface) {
+func (tree *SplayTree[Item]) Join(other Interface[Item]) {
 	if other == nil {
 		return
 	}
-	oak := other.(*SplayTree)
+	oak := other.(*SplayTree[Item])
 	if oak == tree {
 		return
 	}
-	tree.root = join(tree.root, oak.root)
+	tree.root = tree.join(tree.root, oak.root)
 	oak.root = nil
 }
 
-func join(fir, oak *node) *node {
+func (tree *SplayTree[Item]) join(fir, oak *node[Item]) *node[Item] {
 	if fir == nil {
 		return oak
 	} else if oak == nil {
 		return fir
 	}
-	if fir.item.Less(oak.item) {
-		oak = join(fir.right, oak)
+	if tree.lt(fir.item, oak.item) {
+		oak = tree.join(fir.right, oak)
 		fir.right = nil
-		oak.left = join(fir, oak.left)
+		oak.left = tree.join(fir, oak.left)
 		return oak
-	} else if oak.item.Less(fir.item) {
-		fir = join(fir, oak.right)
+	} else if tree.lt(oak.item, fir.item) {
+		fir = tree.join(fir, oak.right)
 		oak.right = nil
-		fir.left = join(fir.left, oak)
+		fir.left = tree.join(fir.left, oak)
 		return fir
 	} else {
-		fir.left = join(fir.left, oak.left)
-		fir.right = join(fir.right, oak.right)
+		fir.left = tree.join(fir.left, oak.left)
+		fir.right = tree.join(fir.right, oak.right)
 		return fir
 	}
 }

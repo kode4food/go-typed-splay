@@ -6,6 +6,7 @@
 # Folders
 _obj
 _test
+vendor
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -23,5 +24,16 @@ _testmain.go
 *.test
 *.prof
 
-tags
-coverage.out
+.idea
+.settings
+.vscode
+*.iml
+*~
+\#*#
+
+*.sublime-workspace
+*.sublime-project
+
+.DS_Store
+
+.#*

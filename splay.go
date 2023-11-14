@@ -17,17 +17,17 @@ package splaytree
  *   node of the tree becomes the root.  This property is used
  *   in the delete() method.
  */
-func (tree *SplayTree) splay(item Item) {
-	var temp = node{}
+func (tree *SplayTree[Item]) splay(item Item) {
+	var temp = node[Item]{}
 	var lef = &temp
 	var rig = &temp
 	var top = tree.root
 	for {
-		if item.Less(top.item) {
+		if tree.lt(item, top.item) {
 			if top.left == nil {
 				break
 			}
-			if item.Less(top.left.item) {
+			if tree.lt(item, top.left.item) {
 				// rotate right
 				yes := top.left
 				top.left = yes.right
@@ -41,11 +41,11 @@ func (tree *SplayTree) splay(item Item) {
 			rig.left = top
 			rig = top
 			top = top.left
-		} else if top.item.Less(item) {
+		} else if tree.lt(top.item, item) {
 			if top.right == nil {
 				break
 			}
-			if top.right.item.Less(item) {
+			if tree.lt(top.right.item, item) {
 				// rotate left
 				yes := top.right
 				top.right = yes.left

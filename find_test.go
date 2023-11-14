@@ -3,22 +3,24 @@ package splaytree
 import "testing"
 
 func TestMin(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	tree.Check()
-	if tree.Min() != nil {
+	if _, ok := tree.Min(); ok {
 		t.Errorf("tree min !nil")
 	}
-	items := []Item{Int(3), Int(5), Int(7), Int(2), Int(4), Int(6), Int(8)}
-	min := Int(99)
+	items := []int{3, 5, 7, 2, 4, 6, 8}
+	min := 99
 	for _, item := range items {
 		if tree.Insert(item) != true {
 			t.Errorf("tree insert %v", item)
 		}
 		tree.Check()
-		if item.Less(min) {
-			min = item.(Int)
+		if item < min {
+			min = item
 		}
-		if tree.Min() != min {
+		if m, ok := tree.Min(); ok && m != min {
 			t.Errorf("tree min !%v", item)
 		}
 		tree.Check()
@@ -26,22 +28,24 @@ func TestMin(t *testing.T) {
 }
 
 func TestMax(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	tree.Check()
-	if tree.Max() != nil {
+	if _, ok := tree.Max(); ok {
 		t.Errorf("tree max !nil")
 	}
-	items := []Item{Int(3), Int(5), Int(7), Int(2), Int(4), Int(6), Int(8)}
-	max := Int(0)
+	items := []int{3, 5, 7, 2, 4, 6, 8}
+	max := 0
 	for _, item := range items {
 		if tree.Insert(item) != true {
 			t.Errorf("tree insert %v", item)
 		}
 		tree.Check()
-		if max.Less(item) {
-			max = item.(Int)
+		if max < item {
+			max = item
 		}
-		if tree.Max() != max {
+		if m, ok := tree.Max(); ok && m != max {
 			t.Errorf("tree max !%v", item)
 		}
 		tree.Check()
@@ -49,25 +53,24 @@ func TestMax(t *testing.T) {
 }
 
 func TestLookup(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	tree.Check()
-	if i := tree.Lookup(nil); i != nil {
-		t.Errorf("tree find !nil %v", i)
-	}
-	items := []Item{Int(3), Int(5), Int(7), Int(2), Int(4), Int(6), Int(8)}
+	items := []int{3, 5, 7, 2, 4, 6, 8}
 	for _, item := range items {
 		if tree.Insert(item) != true {
 			t.Errorf("tree insert %v", item)
 		}
 		tree.Check()
-		if i := tree.Lookup(item); i == nil || i != item {
+		if i, ok := tree.Lookup(item); !ok || i != item {
 			t.Errorf("tree lookup !%v", item)
 		}
 		tree.Check()
 	}
-	miss := []Item{Int(1), Int(0), Int(9)}
+	miss := []int{1, 0, 9}
 	for _, item := range miss {
-		if i := tree.Lookup(item); i != nil {
+		if i, ok := tree.Lookup(item); ok {
 			t.Errorf("tree lookup !!%v %v", item, i)
 		}
 		tree.Check()

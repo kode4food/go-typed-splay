@@ -2,37 +2,37 @@ package splaytree
 
 // Check verifies that the tree
 // is a proper binary search tree.
-func (tree *SplayTree) Check() {
+func (tree *SplayTree[_]) Check() {
 	if !tree.isBinarySearchTree() {
 		panic("IsBinarySearchTree failed")
 	}
 }
 
 // Return true if tree is a proper binary search tree.
-func (tree *SplayTree) isBinarySearchTree() bool {
+func (tree *SplayTree[_]) isBinarySearchTree() bool {
 	if tree.root == nil {
 		return true
 	}
-	min, max := tree.root.isBinarySearchTree()
-	return min != nil && max != nil
+	_, _, ok := tree.isBinarySearchNode(tree.root)
+	return ok
 }
 
 // Return the minimum and maximum element at this node.
-func (node *node) isBinarySearchTree() (Item, Item) {
+func (tree *SplayTree[Item]) isBinarySearchNode(node *node[Item]) (Item, Item, bool) {
 	min, max := node.item, node.item
 	if node.left != nil {
-		lmin, lmax := node.left.isBinarySearchTree()
-		if lmax == nil || !lmax.Less(min) {
-			return nil, nil
+		lmin, lmax, ok := tree.isBinarySearchNode(node.left)
+		if !ok || !tree.lt(lmax, min) {
+			return lmin, lmax, false
 		}
 		min = lmin
 	}
 	if node.right != nil {
-		rmin, rmax := node.right.isBinarySearchTree()
-		if rmin == nil || !max.Less(rmin) {
-			return nil, nil
+		rmin, rmax, ok := tree.isBinarySearchNode(node.right)
+		if !ok || !tree.lt(max, rmin) {
+			return rmin, rmax, false
 		}
 		max = rmax
 	}
-	return min, max
+	return min, max, true
 }

@@ -3,10 +3,14 @@ package splaytree
 import "testing"
 
 func TestJoin(t *testing.T) {
-	fir := NewSplayTree()
-	oak := NewSplayTree()
-	it1 := []Item{Int(6), Int(4), Int(2), Int(5), Int(3), Int(7), Int(0)}
-	it2 := []Item{Int(-1), Int(14), Int(-2), Int(15), Int(-3), Int(17), Int(10)}
+	fir := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
+	oak := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
+	it1 := []int{6, 4, 2, 5, 3, 7, 0}
+	it2 := []int{-1, 14, -2, 15, -3, 17, 10}
 	fir.InsertAll(it1)
 	fir.Join(nil)
 	fir.Join(fir)
@@ -29,7 +33,7 @@ func TestJoin(t *testing.T) {
 	}
 	fir.Check()
 	for _, item := range append(it1, it2...) {
-		if fir.Lookup(item) == nil {
+		if _, ok := fir.Lookup(item); !ok {
 			t.Errorf("join lookup !%v", item)
 		}
 	}

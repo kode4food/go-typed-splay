@@ -3,7 +3,9 @@ package splaytree
 import "testing"
 
 func TestNewSplayTree(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	if tree == nil {
 		t.Errorf("new tree == nil")
 	}

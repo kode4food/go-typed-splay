@@ -18,7 +18,9 @@ func TestStress(t *testing.T) {
 	}
 
 	for outer := 0; outer < 10; outer++ {
-		tree := NewSplayTree()
+		tree := NewSplayTree(func(l, r int) bool {
+			return l < r
+		})
 		size := atLeast(3000)
 		nums := rand.Perm(size)
 		for i := 0; i < size; i++ {
@@ -26,7 +28,7 @@ func TestStress(t *testing.T) {
 		}
 
 		for i := 0; i < size; i++ {
-			if !tree.Insert(Int(nums[i])) {
+			if !tree.Insert(nums[i]) {
 				t.Errorf("insert failed %v %v", i, nums[i])
 			}
 		}
@@ -37,36 +39,36 @@ func TestStress(t *testing.T) {
 		for i := 0; i < doit; i++ {
 			k := rand.Intn(2 * size)
 			f, have := findSorted(k, nums, size)
-			look := tree.Lookup(Int(k)) != nil
+			_, look := tree.Lookup(k)
 			if look != have && (!have || !dels[f]) {
 				t.Errorf("lookup failed %v %v", look, have)
 			} else if look {
 				r := rand.Intn(1000)
 				if r < 250 {
-					del := tree.Delete(Int(k))
-					if del == nil {
+					_, del := tree.Delete(k)
+					if !del {
 						t.Errorf("delete failed %v %v %v", look, have, dels[f])
 					}
-					if del != nil {
+					if del {
 						dels[f] = true
 					}
 				}
 			} else if have && dels[f] {
 				r := rand.Intn(1000)
 				if r < 100 {
-					if !tree.Insert(Int(k)) {
+					if !tree.Insert(k) {
 						t.Errorf("insert failed %v %v %v", look, have, dels[f])
 					} else {
 						dels[f] = false
 					}
 				} else if r < 200 {
-					if tree.Replace(Int(k)) {
+					if tree.Replace(k) {
 						t.Errorf("replace failed %v %v %v", look, have, dels[f])
 					} else {
 						dels[f] = false
 					}
 				}
-			} else if del := tree.Delete(Int(k)); del != nil {
+			} else if _, del := tree.Delete(k); del {
 				t.Errorf("delete should have failed %v %v %v", look, have, dels[f])
 			}
 		}

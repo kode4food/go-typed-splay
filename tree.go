@@ -1,20 +1,21 @@
 package splaytree
 
 // SplayTree defines the splay tree type.
-type SplayTree struct {
-	root *node
+type SplayTree[Item any] struct {
+	lt   LessThan[Item]
+	root *node[Item]
 }
 
 // Compile time test if SplayTree fully implements Interface.
-var _ Interface = (*SplayTree)(nil)
+var _ Interface[any] = (*SplayTree[any])(nil)
 
 // Clear all elements from the tree.
-func (tree *SplayTree) Clear() {
+func (tree *SplayTree[_]) Clear() {
 	tree.root = nil
 }
 
 // Count the number of elements in the tree.
-func (tree *SplayTree) Count() int {
+func (tree *SplayTree[_]) Count() int {
 	return tree.root.count()
 }
 
@@ -22,20 +23,21 @@ func (tree *SplayTree) Count() int {
 // This is the number of steps from
 // the root to the farthest element.
 // An empty tree has height -1.
-func (tree *SplayTree) Height() int {
+func (tree *SplayTree[_]) Height() int {
 	return -1 + tree.root.height()
 }
 
 // NonEmpty tests if the tree contains at least one element.
-func (tree *SplayTree) NonEmpty() bool {
+func (tree *SplayTree[_]) NonEmpty() bool {
 	return tree.root != nil
 }
 
-// Root gives the element which is currently at the root
-// of the tree. If the tree is empty then nil is returned.
-func (tree *SplayTree) Root() Item {
+// Root gives the element which is currently at the root of the tree. If the
+// tree is empty then the zero value and false are returned.
+func (tree *SplayTree[Item]) Root() (Item, bool) {
 	if tree.root == nil {
-		return nil
+		var zero Item
+		return zero, false
 	}
-	return tree.root.item
+	return tree.root.item, true
 }

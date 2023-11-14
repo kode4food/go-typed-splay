@@ -3,12 +3,14 @@ package splaytree
 import "testing"
 
 func TestInsert(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	if tree == nil {
 		t.Errorf("new tree == nil")
 	}
 	num := 0
-	for _, item := range []Item{Int(6), Int(4), Int(2), Int(5), Int(3), Int(7), Int(0)} {
+	for _, item := range []int{6, 4, 2, 5, 3, 7, 0} {
 		if tree.Insert(item) == false {
 			t.Errorf("insert !%v", item)
 		}
@@ -16,7 +18,7 @@ func TestInsert(t *testing.T) {
 		if cnt := tree.Count(); cnt != num {
 			t.Errorf("insert %v != %v", item, cnt)
 		}
-		if tree.Lookup(item) == nil {
+		if _, ok := tree.Lookup(item); !ok {
 			t.Errorf("lookup after insert !%v", item)
 		}
 		tree.Check()
@@ -24,12 +26,14 @@ func TestInsert(t *testing.T) {
 }
 
 func TestReplace(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	if tree == nil {
 		t.Errorf("new tree == nil")
 	}
 	num := 0
-	for _, item := range []Item{Int(6), Int(4), Int(2), Int(5), Int(3), Int(7), Int(0)} {
+	for _, item := range []int{6, 4, 2, 5, 3, 7, 0} {
 		if tree.Replace(item) != false {
 			t.Errorf("replace !%v false", item)
 		}
@@ -37,19 +41,19 @@ func TestReplace(t *testing.T) {
 		if cnt := tree.Count(); cnt != num {
 			t.Errorf("insert %v != %v", item, cnt)
 		}
-		if tree.Lookup(item) == nil {
+		if _, ok := tree.Lookup(item); !ok {
 			t.Errorf("lookup after replace !%v", item)
 		}
 		tree.Check()
 	}
-	for _, item := range []Item{Int(6), Int(4), Int(2), Int(5), Int(3), Int(7), Int(0)} {
+	for _, item := range []int{6, 4, 2, 5, 3, 7, 0} {
 		if tree.Replace(item) != true {
 			t.Errorf("replace !%v true", item)
 		}
 		if cnt := tree.Count(); cnt != num {
 			t.Errorf("replace %v != %v", item, cnt)
 		}
-		if tree.Lookup(item) == nil {
+		if _, ok := tree.Lookup(item); !ok {
 			t.Errorf("lookup after 2nd replace !%v", item)
 		}
 		tree.Check()
@@ -57,16 +61,18 @@ func TestReplace(t *testing.T) {
 }
 
 func TestReplaceAll(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	if tree == nil {
 		t.Errorf("new tree == nil")
 	}
-	items1 := []Item{Int(6), Int(4), Int(2), Int(5), Int(3), Int(7), Int(0)}
+	items1 := []int{6, 4, 2, 5, 3, 7, 0}
 	num := tree.ReplaceAll(items1)
 	if num != 0 {
 		t.Errorf("ReplaceAll %v != %v", num, 0)
 	}
-	items2 := []Item{Int(6), Int(4), Int(2), Int(5), Int(3), Int(7), Int(0)}
+	items2 := []int{6, 4, 2, 5, 3, 7, 0}
 	num = tree.ReplaceAll(items2)
 	if num != len(items2) {
 		t.Errorf("ReplaceAll %v != %v", num, len(items2))

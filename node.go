@@ -1,34 +1,34 @@
 package splaytree
 
-type node struct {
-	left, right *node
+type node[Item any] struct {
+	left, right *node[Item]
 	item        Item
 }
 
-func newNode(item Item) *node {
-	return &node{item: item}
+func newNode[Item any](item Item) *node[Item] {
+	return &node[Item]{item: item}
 }
 
-func (node *node) count() int {
+func (node *node[_]) count() int {
 	if node == nil {
 		return 0
 	}
 	return 1 + node.left.count() + node.right.count()
 }
 
-func (node *node) height() int {
+func (node *node[_]) height() int {
 	if node == nil {
 		return 0
 	}
 	return 1 + max(node.left.height(), node.right.height())
 }
 
-func (node *node) duplicate() *node {
+func (node *node[Item]) duplicate() *node[Item] {
 	if node == nil {
 		return nil
 	}
-	copy := newNode(node.item)
-	copy.left = node.left.duplicate()
-	copy.right = node.right.duplicate()
-	return copy
+	res := newNode(node.item)
+	res.left = node.left.duplicate()
+	res.right = node.right.duplicate()
+	return res
 }

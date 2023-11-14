@@ -1,44 +1,48 @@
 package splaytree
 
-// Min gives the smallest element in the tree.
-// If the tree is empty then nil is returned.
-func (tree *SplayTree) Min() Item {
+// Min gives the smallest element in the tree. If the tree is empty then the
+// zero value and false are returned.
+func (tree *SplayTree[Item]) Min() (Item, bool) {
 	node := tree.root
 	if node == nil {
-		return nil
+		var zero Item
+		return zero, false
 	}
 	for node.left != nil {
 		node = node.left
 	}
 	item := node.item
 	tree.splay(item)
-	return item
+	return item, true
 }
 
-// Max gives the largest element in the tree.
-// If the tree is empty then nil is returned.
-func (tree *SplayTree) Max() Item {
+// Max gives the largest element in the tree. If the tree is empty then the
+// zero value and false are returned
+func (tree *SplayTree[Item]) Max() (Item, bool) {
 	node := tree.root
 	if node == nil {
-		return nil
+		var zero Item
+		return zero, false
 	}
 	for node.right != nil {
 		node = node.right
 	}
 	item := node.item
 	tree.splay(item)
-	return item
+	return item, true
 }
 
-// Lookup an item and return the found item.
-// If the tree is empty then nil is returned.
-func (tree *SplayTree) Lookup(item Item) Item {
-	if item == nil || tree.root == nil {
-		return nil
+// Lookup an item and return the found item. If the tree is empty then the zero
+// value and false are returned.
+func (tree *SplayTree[Item]) Lookup(item Item) (Item, bool) {
+	if tree.root == nil {
+		var zero Item
+		return zero, false
 	}
 	tree.splay(item)
-	if item.Less(tree.root.item) || tree.root.item.Less(item) {
-		return nil
+	if tree.lt(item, tree.root.item) || tree.lt(tree.root.item, item) {
+		var zero Item
+		return zero, false
 	}
-	return tree.root.item
+	return tree.root.item, true
 }

@@ -3,8 +3,10 @@ package splaytree
 import "testing"
 
 func TestClear(t *testing.T) {
-	tree := NewSplayTree()
-	tree.InsertAll([]Item{Int(6), Int(4), Int(3), Int(1)})
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
+	tree.InsertAll([]int{6, 4, 3, 1})
 	tree.Check()
 	tree.Clear()
 	if tree.root != nil {
@@ -13,16 +15,18 @@ func TestClear(t *testing.T) {
 }
 
 func TestCount(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	if tree.Count() != 0 {
 		t.Errorf("count !0")
 	}
-	tree.InsertAll([]Item{Int(6), Int(4), Int(3), Int(1)})
+	tree.InsertAll([]int{6, 4, 3, 1})
 	tree.Check()
 	if tree.Count() != 4 {
 		t.Errorf("count !4")
 	}
-	tree.DeleteAll([]Item{Int(3), Int(2)})
+	tree.DeleteAll([]int{3, 2})
 	if tree.Count() != 3 {
 		t.Errorf("count !3")
 	}
@@ -33,27 +37,29 @@ func TestCount(t *testing.T) {
 }
 
 func TestHeight(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	if tree.Height() != -1 {
 		t.Errorf("height !-1")
 	}
-	tree.Insert(Int(3))
+	tree.Insert(3)
 	if tree.Height() != 0 {
 		t.Errorf("height !0")
 	}
-	tree.Insert(Int(3))
+	tree.Insert(3)
 	if tree.Height() != 0 {
 		t.Errorf("height !0")
 	}
-	tree.Insert(Int(1))
+	tree.Insert(1)
 	if h := tree.Height(); h != 1 {
 		t.Errorf("height !1 %v %v", h, tree.Count())
 	}
-	tree.Insert(Int(2))
+	tree.Insert(2)
 	if h := tree.Height(); h != 1 {
 		t.Errorf("height !1 %v %v", h, tree.Count())
 	}
-	tree.Insert(Int(9))
+	tree.Insert(9)
 	if h := tree.Height(); h != 2 && h != 3 {
 		t.Errorf("height !<2 %v %v", h, tree.Count())
 	}
@@ -61,11 +67,13 @@ func TestHeight(t *testing.T) {
 }
 
 func TestNonEmpty(t *testing.T) {
-	tree := NewSplayTree()
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
 	if tree.NonEmpty() != false {
 		t.Errorf("NonEmpty !false")
 	}
-	tree.Insert(Int(2))
+	tree.Insert(2)
 	if tree.NonEmpty() != true {
 		t.Errorf("NonEmpty !true")
 	}
@@ -76,16 +84,18 @@ func TestNonEmpty(t *testing.T) {
 }
 
 func TestRoot(t *testing.T) {
-	tree := NewSplayTree()
-	if r := tree.Root(); r != nil {
+	tree := NewSplayTree(func(l, r int) bool {
+		return l < r
+	})
+	if _, ok := tree.Root(); ok {
 		t.Errorf("Root !false")
 	}
-	tree.Insert(Int(2))
-	if r := tree.Root(); r == nil {
+	tree.Insert(2)
+	if _, ok := tree.Root(); !ok {
 		t.Errorf("Root !true")
 	}
 	tree.Clear()
-	if r := tree.Root(); r != nil {
+	if _, ok := tree.Root(); ok {
 		t.Errorf("Root !false")
 	}
 }

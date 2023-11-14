@@ -3,7 +3,7 @@ package splaytree
 import "testing"
 
 func TestStack(t *testing.T) {
-	stack := newStack()
+	stack := newStack[any]()
 	if stack == nil {
 		t.Errorf("newStack nil")
 	}
@@ -13,7 +13,7 @@ func TestStack(t *testing.T) {
 	if stack.empty() != true {
 		t.Errorf("newStack empty !1")
 	}
-	head := &node{}
+	head := &node[any]{}
 	stack.push(head)
 	if stack.length() != 1 {
 		t.Errorf("newStack length !1")
@@ -24,7 +24,7 @@ func TestStack(t *testing.T) {
 	if stack.tos() != head {
 		t.Errorf("newStack tos !head")
 	}
-	tail := &node{}
+	tail := &node[any]{}
 	stack.push(tail)
 	if stack.length() != 2 {
 		t.Errorf("newStack length !2")

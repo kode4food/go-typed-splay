@@ -6,15 +6,15 @@ package splaytree
 // The items are returned sorted
 // from the smallest to the largest item.
 // When all items have been visited nil is returned.
-//
-func (tree *SplayTree) Iterator() func() Item {
-	stack := newStack()
+func (tree *SplayTree[Item]) Iterator() func() (Item, bool) {
+	stack := newStack[Item]()
 	for node := tree.root; node != nil; node = node.left {
 		stack.push(node)
 	}
-	return func() Item {
+	return func() (Item, bool) {
 		if stack.empty() {
-			return nil
+			var zero Item
+			return zero, false
 		}
 		node := stack.pop()
 		item := node.item
@@ -25,7 +25,7 @@ func (tree *SplayTree) Iterator() func() Item {
 			}
 			stack.push(node)
 		}
-		return item
+		return item, true
 	}
 }
 
@@ -35,15 +35,15 @@ func (tree *SplayTree) Iterator() func() Item {
 // The items are returned in reverse sorted order
 // from the largest to the smallest item.
 // When all items have been visited nil is returned.
-//
-func (tree *SplayTree) ReverseIterator() func() Item {
-	stack := newStack()
+func (tree *SplayTree[Item]) ReverseIterator() func() (Item, bool) {
+	stack := newStack[Item]()
 	for node := tree.root; node != nil; node = node.right {
 		stack.push(node)
 	}
-	return func() Item {
+	return func() (Item, bool) {
 		if stack.empty() {
-			return nil
+			var zero Item
+			return zero, false
 		}
 		node := stack.pop()
 		item := node.item
@@ -54,7 +54,7 @@ func (tree *SplayTree) ReverseIterator() func() Item {
 			}
 			stack.push(node)
 		}
-		return item
+		return item, true
 	}
 }
 
@@ -71,21 +71,20 @@ func (tree *SplayTree) ReverseIterator() func() Item {
 // lookup on the last returned non-nil item in order
 // to preserve optimal theoretical properties.
 // The iterator examples illustrate this.
-//
-func (tree *SplayTree) RangeIterator(lower Item, upper Item) func() Item {
+func (tree *SplayTree[Item]) RangeIterator(lower Item, upper Item) func() (Item, bool) {
 	inRange := func(item Item) bool {
-		return !item.Less(lower) && !upper.Less(item)
+		return !tree.lt(item, lower) && !tree.lt(upper, item)
 	}
-	stack := newStack()
-	if !upper.Less(lower) && tree.root != nil {
+	stack := newStack[Item]()
+	if !tree.lt(upper, lower) && tree.root != nil {
 		for node := tree.root; ; {
-			if node.item.Less(lower) {
+			if tree.lt(node.item, lower) {
 				if node.right == nil {
 					tree.splay(node.item)
 					break
 				}
 				node = node.right
-			} else if upper.Less(node.item) {
+			} else if tree.lt(upper, node.item) {
 				if node.left == nil {
 					tree.splay(node.item)
 					break
@@ -100,9 +99,10 @@ func (tree *SplayTree) RangeIterator(lower Item, upper Item) func() Item {
 			}
 		}
 	}
-	return func() Item {
+	return func() (Item, bool) {
 		if stack.empty() {
-			return nil
+			var zero Item
+			return zero, false
 		}
 		node := stack.pop()
 		item := node.item
@@ -113,6 +113,6 @@ func (tree *SplayTree) RangeIterator(lower Item, upper Item) func() Item {
 			}
 			stack.push(node)
 		}
-		return item
+		return item, true
 	}
 }
