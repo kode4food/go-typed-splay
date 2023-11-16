@@ -1,9 +1,9 @@
-# go-splaytree
+# go-typed-splay
 
 [![GoDoc](https://godoc.org/github.com/kode4food/go-typed-splay?status.svg)](https://godoc.org/github.com/kode4food/go-typed-splay)
 [![Report](https://goreportcard.com/badge/github.com/kode4food/go-typed-splay)](https://goreportcard.com/report/github.com/kode4food/go-typed-splay)
 
-The splay tree data structure in Go. 
+The splay tree data structure in Go, with generic type support. 
 
 [Splay trees](https://en.wikipedia.org/wiki/Splay_tree)
 are self-balancing binary search trees.
@@ -30,7 +30,7 @@ which is optimal.  Retrieving that same sequence of 'n'
 elements in either ascending or descending order has total
 cost O(n), which is again optimal.
 
-##References
+## References
 
 ["Performance Analysis of BSTs in System Software"](http://benpfaff.org/papers/libavl.pdf)
 by Ben Pfaff, compares the performance of 20 variants
@@ -43,11 +43,11 @@ This is a fork of github.com/gijsbers/go-splaytree intended to support Go generi
 * The `Item` interface that the tree managed has been replaced by a generic type. The original interface required the programmer to implement a `Less` method. This has been replaced by a comparator function being provided to the `NewSplayTree` constructor. 
 * The original implementation checked for nil Items and expected the programmer to check for nil Items. Because nil is a perfectly valid result for a generic type, this access pattern has been replaced in many places with one that adds a bool result to signal a successful operation. 
 
-##Installation
+## Installation
 
         $ go get github.com/kode4food/go-typed-splay
 
-##Copyright and License
+## Copyright and License
 
 Copyright ©2016 Bert Gijsbers except where otherwise noted. All rights reserved.
 Use of this source code is governed by an Apache 2.0 license
