@@ -2,5 +2,5 @@
 
 all:
 	@go build
-	@golint
-	@go test
+	@go vet ./...
+	@go test ./...

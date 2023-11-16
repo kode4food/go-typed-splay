@@ -13,7 +13,7 @@ func Example() {
 	for i, ok := iter(); ok; i, ok = iter() {
 		fmt.Printf("%v ", i)
 	}
-	// Output: 3 0 4 <nil> 1 2 1 2
+	// Output: 0 1 2 3 4 0 1 2 3 4
 }
 
 // Iterate over items in a tree. Abort the iteration halfway
