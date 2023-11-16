@@ -5,12 +5,12 @@ package splaytree
 // where left contains all items less than the boundary
 // and right contains only items at or beyond the boundary.
 func (tree *SplayTree[Item]) Split(item Item) (*SplayTree[Item], *SplayTree[Item]) {
-	more := NewSplayTree[Item](tree.lt)
+	more := NewSplayTree[Item](tree.lessThan)
 	if tree.root == nil {
 		return tree, more
 	}
 	tree.splay(item)
-	if tree.lt(tree.root.item, item) {
+	if tree.lessThan(tree.root.item, item) {
 		more.root = tree.root.right
 		tree.root.right = nil
 	} else {

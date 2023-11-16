@@ -2,8 +2,8 @@ package splaytree
 
 // SplayTree defines the splay tree type.
 type SplayTree[Item any] struct {
-	lt   LessThan[Item]
-	root *node[Item]
+	lessThan LessThan[Item]
+	root     *node[Item]
 }
 
 // Compile time test if SplayTree fully implements Interface.

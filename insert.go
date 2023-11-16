@@ -48,14 +48,14 @@ func (tree *SplayTree[Item]) insertReplace(item Item, replace bool) bool {
 	}
 	tree.splay(item)
 	root := tree.root
-	if tree.lt(item, root.item) {
+	if tree.lessThan(item, root.item) {
 		node := newNode(item)
 		node.left = root.left
 		node.right = root
 		root.left = nil
 		tree.root = node
 		return !replace
-	} else if tree.lt(root.item, item) {
+	} else if tree.lessThan(root.item, item) {
 		node := newNode(item)
 		node.right = root.right
 		node.left = root

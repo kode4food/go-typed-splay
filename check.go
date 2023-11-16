@@ -22,14 +22,14 @@ func (tree *SplayTree[Item]) isBinarySearchNode(node *node[Item]) (Item, Item, b
 	min, max := node.item, node.item
 	if node.left != nil {
 		lmin, lmax, ok := tree.isBinarySearchNode(node.left)
-		if !ok || !tree.lt(lmax, min) {
+		if !ok || !tree.lessThan(lmax, min) {
 			return lmin, lmax, false
 		}
 		min = lmin
 	}
 	if node.right != nil {
 		rmin, rmax, ok := tree.isBinarySearchNode(node.right)
-		if !ok || !tree.lt(max, rmin) {
+		if !ok || !tree.lessThan(max, rmin) {
 			return rmin, rmax, false
 		}
 		max = rmax

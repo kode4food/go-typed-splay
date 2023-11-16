@@ -23,11 +23,11 @@ func (tree *SplayTree[Item]) splay(item Item) {
 	var rig = &temp
 	var top = tree.root
 	for {
-		if tree.lt(item, top.item) {
+		if tree.lessThan(item, top.item) {
 			if top.left == nil {
 				break
 			}
-			if tree.lt(item, top.left.item) {
+			if tree.lessThan(item, top.left.item) {
 				// rotate right
 				yes := top.left
 				top.left = yes.right
@@ -41,11 +41,11 @@ func (tree *SplayTree[Item]) splay(item Item) {
 			rig.left = top
 			rig = top
 			top = top.left
-		} else if tree.lt(top.item, item) {
+		} else if tree.lessThan(top.item, item) {
 			if top.right == nil {
 				break
 			}
-			if tree.lt(top.right.item, item) {
+			if tree.lessThan(top.right.item, item) {
 				// rotate left
 				yes := top.right
 				top.right = yes.left

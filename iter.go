@@ -73,18 +73,18 @@ func (tree *SplayTree[Item]) ReverseIterator() func() (Item, bool) {
 // The iterator examples illustrate this.
 func (tree *SplayTree[Item]) RangeIterator(lower Item, upper Item) func() (Item, bool) {
 	inRange := func(item Item) bool {
-		return !tree.lt(item, lower) && !tree.lt(upper, item)
+		return !tree.lessThan(item, lower) && !tree.lessThan(upper, item)
 	}
 	stack := newStack[Item]()
-	if !tree.lt(upper, lower) && tree.root != nil {
+	if !tree.lessThan(upper, lower) && tree.root != nil {
 		for node := tree.root; ; {
-			if tree.lt(node.item, lower) {
+			if tree.lessThan(node.item, lower) {
 				if node.right == nil {
 					tree.splay(node.item)
 					break
 				}
 				node = node.right
-			} else if tree.lt(upper, node.item) {
+			} else if tree.lessThan(upper, node.item) {
 				if node.left == nil {
 					tree.splay(node.item)
 					break

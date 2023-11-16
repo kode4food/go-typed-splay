@@ -8,7 +8,7 @@ func (tree *SplayTree[Item]) Supremum(item Item) (Item, bool) {
 		return zero, false
 	}
 	tree.splay(item)
-	if tree.lt(item, tree.root.item) {
+	if tree.lessThan(item, tree.root.item) {
 		return tree.root.item, true
 	}
 	if tree.root.right != nil {
@@ -30,7 +30,7 @@ func (tree *SplayTree[Item]) Infimum(item Item) (Item, bool) {
 		return zero, false
 	}
 	tree.splay(item)
-	if tree.lt(tree.root.item, item) {
+	if tree.lessThan(tree.root.item, item) {
 		return tree.root.item, true
 	}
 	if tree.root.left != nil {

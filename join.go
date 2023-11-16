@@ -21,12 +21,12 @@ func (tree *SplayTree[Item]) join(fir, oak *node[Item]) *node[Item] {
 	} else if oak == nil {
 		return fir
 	}
-	if tree.lt(fir.item, oak.item) {
+	if tree.lessThan(fir.item, oak.item) {
 		oak = tree.join(fir.right, oak)
 		fir.right = nil
 		oak.left = tree.join(fir, oak.left)
 		return oak
-	} else if tree.lt(oak.item, fir.item) {
+	} else if tree.lessThan(oak.item, fir.item) {
 		fir = tree.join(fir, oak.right)
 		oak.right = nil
 		fir.left = tree.join(fir.left, oak)

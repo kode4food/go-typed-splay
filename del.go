@@ -30,7 +30,7 @@ func (tree *SplayTree[Item]) Delete(item Item) (Item, bool) {
 		return zero, false
 	}
 	tree.splay(item)
-	if tree.lt(item, tree.root.item) || tree.lt(tree.root.item, item) {
+	if tree.lessThan(item, tree.root.item) || tree.lessThan(tree.root.item, item) {
 		var zero Item
 		return zero, false
 	}
