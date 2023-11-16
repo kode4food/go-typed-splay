@@ -34,5 +34,4 @@
 // it has returned nil, in order to preserve optimal theoretical
 // properties, one must do a tree lookup on the last returned item.
 // The iterator examples illustrate this.
-//
 package splaytree
