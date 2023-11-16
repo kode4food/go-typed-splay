@@ -37,8 +37,8 @@ by Ben Pfaff, compares the performance of 20 variants
 of binary search trees (BSTs) and concludes that splay trees
 perform best when accesses are sequential or clustered.
 
-##Credit where it is due
-This is a fork of github.com/gijsbers/go-splaytree intended to support Go generics. As a result, some changes have been made to the API and interface. They are enumerated as follows:
+## Credits and Changes
+This is a fork of Bert Gijsbers' [go-splaytree](github.com/gijsbers/go-splaytree) intended to support Go generics. As a result, some necessary changes have been made to the API and interface. They are enumerated as follows:
 
 * The `Item` interface that the tree managed has been replaced by a generic type. The original interface required the programmer to implement a `Less` method. This has been replaced by a comparator function being provided to the `NewSplayTree` constructor. 
 * The original implementation checked for nil Items and expected the programmer to check for nil Items. Because nil is a perfectly valid result for a generic type, this access pattern has been replaced in many places with one that adds a bool result to signal a successful operation. 
