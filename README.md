@@ -38,6 +38,7 @@ of binary search trees (BSTs) and concludes that splay trees
 perform best when accesses are sequential or clustered.
 
 ## Credits and Changes
+
 This is a fork of Bert Gijsbers' [go-splaytree](github.com/gijsbers/go-splaytree) intended to support Go generics. As a result, some necessary changes have been made to the API and interface. They are enumerated as follows:
 
 * The `Item` interface that the tree managed has been replaced by a generic type. The original interface required the programmer to implement a `Less` method. This has been replaced by a comparator function being provided to the `NewSplayTree` constructor. 
